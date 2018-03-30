@@ -329,7 +329,7 @@ int mmngr_share_in_user_ext(MMNGR_ID *pid,
 			size_t size,
 			unsigned int hard_addr,
 			void **puser_virt_addr,
-			void *mem_param)
+			__attribute__ ((unused)) void *mem_param)
 {
 	int		ret;
 	int		fd = -1;
