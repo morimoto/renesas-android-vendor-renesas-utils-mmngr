@@ -1,0 +1,16 @@
+cc_library_shared {
+    name: "libmmngr",
+
+    proprietary: true,
+    compile_multilib: "64",
+
+    srcs: ["libmmngr/mmngr/if/mmngr_if.c"],
+
+    include_dirs: ["hardware/renesas/modules/mmngr/mmngr_drv/mmngr/mmngr-module/files/mmngr/include"],
+
+    local_include_dirs: ["libmmngr/mmngr/include"],
+
+    export_include_dirs: ["libmmngr/mmngr/include"],
+
+    shared_libs: ["liblog"],
+}
