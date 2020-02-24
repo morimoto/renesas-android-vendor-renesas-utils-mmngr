@@ -12,5 +12,9 @@ cc_library_shared {
 
     export_include_dirs: ["libmmngr/mmngr/include"],
 
-    shared_libs: ["liblog"],
+    header_libs: [
+        "device_kernel_headers",
+    ],
+
+    shared_libs: ["liblog", "libion"],
 }

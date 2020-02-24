@@ -54,6 +54,9 @@ int mmngr_share_in_user(MMNGR_ID *pid,
 			unsigned long *puser_virt_addr);
 int mmngr_release_in_user(MMNGR_ID id);
 
+/*Added for getting phys address of ION buffer*/
+int mmngr_get_buffer_phys_addr(int dma_fd, uint64_t *paddr);
+
 #define R_MM_OK			0
 #define R_MM_FATAL		-1
 #define R_MM_SEQE		-2

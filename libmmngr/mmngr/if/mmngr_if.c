@@ -482,3 +482,42 @@ int mmngr_release_in_user(MMNGR_ID id)
 	ret = mmngr_release_in_user_ext(id);
 	return ret;
 }
+
+#define DEVION "/dev/ion"
+#include <uapi/linux/rcar_ion.h>
+int mmngr_get_buffer_phys_addr(int dma_fd, uint64_t *paddr)
+{
+	int ret;
+	int fd;
+	struct ion_custom_data data; /*Custom IOCTL data from rcar_ion.h*/
+	struct ion_phys_addr p_addr; /*Custom structure for rcar_ion_get_phys_addr command*/
+
+	fd = open(DEVION, O_RDWR);
+	if (fd == -1) {
+		perror("DEVION open");
+		ret = R_MM_FATAL;
+		goto exit;
+	}
+
+	p_addr.dma_fd = dma_fd;
+	p_addr.phys_addr = 0;
+
+	data.cmd = RCAR_GET_PHYS_ADDR;
+	data.arg = (unsigned long) &p_addr;
+
+	ret = ioctl(fd, RCAR_ION_CUSTOM, &data);
+	if (ret) {
+		perror("RCAR_ION_CUSTOM");
+		ret = R_MM_FATAL;
+		goto exit;
+	}
+	*paddr = (uint64_t) p_addr.phys_addr;
+	ret = R_MM_OK;
+	/*Fall to the closing file and returning error core*/
+exit:
+	if (fd != -1) {
+		if (close(fd))
+			perror("MMI close");
+	}
+	return ret;
+}
